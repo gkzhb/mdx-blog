@@ -1,13 +1,19 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from './layout.module.css'
-import utilStyles from '../styles/utils.module.css'
-import Link from 'next/link'
+import Head from "next/head";
+import Image from "next/image";
+import styles from "./layout.module.css";
+import utilStyles from "../styles/utils.module.css";
+import Link from "next/link";
+import React from "react";
 
-const name = 'zhb'
-export const siteTitle = 'Next.js Sample Website'
+const name = "zhb";
+export const siteTitle = "Next.js Sample Website";
 
-export default function Layout({ children, home }) {
+interface IProps {
+  children?: JSX.Element[];
+  home?: Boolean;
+}
+
+const Layout: React.FC<IProps> = ({ children, home }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -44,7 +50,7 @@ export default function Layout({ children, home }) {
               <a>
                 <Image
                   priority
-									src="/vercel.svg"
+                  src="/vercel.svg"
                   className={utilStyles.borderCircle}
                   height={108}
                   width={108}
@@ -69,5 +75,7 @@ export default function Layout({ children, home }) {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
+
+export default Layout;
