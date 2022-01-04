@@ -1,8 +1,13 @@
 ---
 title: 'Two Forms of Pre-rendering'
-date: '2020-01-01'
+date: '2022-01-01'
+mathSupport: true
 ---
 
+import { BlogTags } from '../models/blog-tag';
+export const tags = [ BlogTags.Programming ];
+
+$a_1$ is $a_2$, $$a_{12}=b{22}$$
 Next.js has two forms of pre-rendering: **Static Generation** and **Server-side Rendering**. The difference is in **when** it generates the HTML for a page.
 
 - **Static Generation** is the pre-rendering method that generates the HTML at **build time**. The pre-rendered HTML is then _reused_ on each request.

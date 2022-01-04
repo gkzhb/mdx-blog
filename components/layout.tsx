@@ -1,9 +1,16 @@
 import Head from "next/head";
 import Image from "next/image";
-import styles from "./layout.module.css";
-import utilStyles from "../styles/utils.module.css";
 import Link from "next/link";
 import React from "react";
+
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Container from "@mui/material/Container";
+// import MenuIcon from '@mui/icons-material/Menu';
 
 const name = "zhb";
 export const siteTitle = "Next.js Sample Website";
@@ -11,11 +18,14 @@ export const siteTitle = "Next.js Sample Website";
 interface IProps {
   children?: JSX.Element[];
   home?: Boolean;
+  mathSupport?: Boolean;
 }
 
-const Layout: React.FC<IProps> = ({ children, home }) => {
+const Layout: React.FC<IProps> = (props) => {
+  const { children, home, mathSupport } = props;
+  const logoName = 'ZHB\'s Blog';
   return (
-    <div className={styles.container}>
+    <Box sx={{ flexGrow: 1 }}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -30,51 +40,42 @@ const Layout: React.FC<IProps> = ({ children, home }) => {
         />
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
+        {mathSupport ? (
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css"
+            crossOrigin="anonymous"
+          />
+        ) : null}
       </Head>
-      <header className={styles.header}>
-        {home ? (
-          <>
-            <Image
-              priority
-              src="/vercel.svg"
-              className={utilStyles.borderCircle}
-              height={144}
-              width={144}
-              alt={name}
-            />
-            <h1 className={utilStyles.heading2Xl}>{name}</h1>
-          </>
-        ) : (
-          <>
+      <AppBar color="default" position="sticky">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Box sx={{ flexGrow: 1 }} />
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1 }}
+            >
+              {logoName}
+            </Typography>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <main>
+        <Container>{children}</Container>
+      </main>
+      <Container>
+        {!home && (
+          <div>
             <Link href="/">
-              <a>
-                <Image
-                  priority
-                  src="/vercel.svg"
-                  className={utilStyles.borderCircle}
-                  height={108}
-                  width={108}
-                  alt={name}
-                />
-              </a>
+              <a>← Back to home</a>
             </Link>
-            <h2 className={utilStyles.headingLg}>
-              <Link href="/">
-                <a className={utilStyles.colorInherit}>{name}</a>
-              </Link>
-            </h2>
-          </>
+          </div>
         )}
-      </header>
-      <main>{children}</main>
-      {!home && (
-        <div className={styles.backToHome}>
-          <Link href="/">
-            <a>← Back to home</a>
-          </Link>
-        </div>
-      )}
-    </div>
+      </Container>
+    </Box>
   );
 };
 

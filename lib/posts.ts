@@ -2,15 +2,57 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { bundleMDX } from "mdx-bundler";
+import remarkParse from 'remark-parse';
+import remarkMath from "remark-math";
+import remarkRehype from 'remark-rehype';
+import rehypeKatex from "rehype-katex";
+import rehypeStringify from 'rehype-stringify';
+import { getDate } from "./time";
+import remarkGfm from "remark-gfm";
+import dayjs from "dayjs";
 
 const postsDirectory = path.join(process.cwd(), "posts");
+
+export function formatFrontmatter(frontmatter) {
+  const {
+    date: createdDate,
+    title,
+    lastmod: lastModifiedDate,
+    draft,
+    mathSupport,
+  } = frontmatter;
+
+  // Combine the data with the id
+  return {
+    title,
+    date: dayjs(createdDate),
+    createdDate: getDate(createdDate),
+    lastModifiedDate: lastModifiedDate
+      ? getDate(lastModifiedDate)
+      : getDate(createdDate),
+    draft: draft || false,
+    mathSupport: mathSupport || false,
+  };
+}
+
+export function filterFrontmatter(frontmatter) {
+  const post = frontmatter;
+  return {
+    id: post.id || null,
+    title: post.title,
+    createdDate: post.createdDate,
+    lastModifiedDate: post.lastModifiedDate,
+    draft: post.draft,
+    mathSupport: post.mathSupport,
+  };
+}
 
 export function getSortedPostsData() {
   // Get file names under /posts
   const fileNames = fs.readdirSync(postsDirectory);
   const allPostsData = fileNames.map((fileName) => {
     // Remove ".md" from file name to get id
-    const id = fileName.replace(/\.mdx$/, "");
+    const id = fileName.replace(/\.md(x)?$/, "");
 
     // Read markdown file as string
     const fullPath = path.join(postsDirectory, fileName);
@@ -21,12 +63,12 @@ export function getSortedPostsData() {
 
     // Combine the data with the id
     return {
+      ...formatFrontmatter(matterResult.data),
       id,
-      ...matterResult.data as any,
     };
   });
   // Sort posts by date
-  return allPostsData.sort(({ date: a }, { date: b }) => {
+  const sortedPosts = allPostsData.sort(({ date: a }, { date: b }) => {
     if (a < b) {
       return 1;
     } else if (a > b) {
@@ -34,7 +76,16 @@ export function getSortedPostsData() {
     } else {
       return 0;
     }
-  });
+  }).map(post => ({
+      id: post.id,
+      title: post.title,
+      createdDate: post.createdDate,
+      lastModifiedDate: post.lastModifiedDate,
+      draft: post.draft,
+      mathSupport: post.mathSupport,
+  }));
+  // console.log('sorted all posts:', sortedPosts);
+  return sortedPosts;
 }
 
 export function getAllPostIds() {
@@ -55,7 +106,7 @@ export function getAllPostIds() {
   // ]
   return fileNames.map((fileName: string) => ({
     params: {
-      id: fileName.replace(/\.mdx$/, ""),
+      id: fileName.replace(/\.md(x)?$/, ""),
     },
   }));
 }
@@ -69,21 +120,35 @@ export interface PostData {
 }
 
 export const getPostData = async (id: string) => {
+  const extList = ['mdx', 'md'];
   const fullPath = path.join(postsDirectory, `${id}.mdx`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
+  let fileContents = null
+  for (const ext of extList) {
+    const fullPath = path.join(postsDirectory, `${id}.${ext}`);
+    if (!fs.existsSync(fullPath)) {
+      continue;
+    }
+    fileContents = fs.readFileSync(fullPath, "utf8");
+  }
 
   const { code, frontmatter } = await bundleMDX(fileContents, {
     xdmOptions: (options) => {
-      options.remarkPlugins = [...(options?.remarkPlugins ?? [])];
-      options.rehypePlugins = [...(options?.rehypePlugins ?? [])];
+      console.log(options);
+      options.remarkPlugins = [
+        ...(options?.remarkPlugins ?? []),
+        remarkGfm,
+        remarkMath,
+      ];
+      options.rehypePlugins = [...(options?.rehypePlugins ?? []), rehypeKatex];
+      console.log(options);
       return options;
     },
   });
 
   // Combine the data with the id
   return {
+    frontmatter: filterFrontmatter(formatFrontmatter(frontmatter)),
     id,
-    frontmatter,
     code,
   } as PostData;
 };

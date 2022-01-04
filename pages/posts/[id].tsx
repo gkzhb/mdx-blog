@@ -8,12 +8,9 @@ const Post = ({ postData }: { postData: PostData }) => {
   const { frontmatter, code } = postData;
   const Component = useMemo(() => getMDXComponent(code), [code]);
   return (
-    <Layout>
+    <Layout mathSupport={frontmatter.mathSupport}>
       <h1>{frontmatter.title}</h1>
-      <br />
-      {postData.id}
-      <br />
-      {frontmatter.date}
+      <div>{frontmatter.createdDate} 最后修改于 {frontmatter.lastModifiedDate}</div>
       <article>
         <Component 
           components={{
