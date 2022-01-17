@@ -1,9 +1,9 @@
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "../components/Link";
 import { NextPage, GetStaticProps } from "next";
 import utilStyles from "../styles/utils.module.css";
-import Layout, { siteTitle } from "../components/layout";
+import Layout, { siteTitle } from "../components/Layout";
 import { getSortedPostsData } from "../lib/posts";
 
 export interface IPageProps {
@@ -28,7 +28,7 @@ const Home: NextPage<IPageProps> = ({ allPostsData }) => {
         <p>I am zhb</p>
         <p>
           (This is a sample website - you’ll be building a site like this on{" "}
-          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
+          <Link href="https://nextjs.org/learn">our Next.js tutorial</Link>.)
         </p>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
@@ -36,9 +36,7 @@ const Home: NextPage<IPageProps> = ({ allPostsData }) => {
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, createdDate, title }) => (
             <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>
-                <a>{title}</a>
-              </Link>
+              <Link href={`/posts/${id}`}>{title}</Link>
               <br />
               {createdDate}
             </li>

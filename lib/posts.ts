@@ -121,7 +121,6 @@ export interface PostData {
 
 export const getPostData = async (id: string) => {
   const extList = ['mdx', 'md'];
-  const fullPath = path.join(postsDirectory, `${id}.mdx`);
   let fileContents = null
   for (const ext of extList) {
     const fullPath = path.join(postsDirectory, `${id}.${ext}`);
@@ -131,16 +130,15 @@ export const getPostData = async (id: string) => {
     fileContents = fs.readFileSync(fullPath, "utf8");
   }
 
-  const { code, frontmatter } = await bundleMDX(fileContents, {
+  const { code, frontmatter } = await bundleMDX({
+    source: fileContents,
     xdmOptions: (options) => {
-      console.log(options);
       options.remarkPlugins = [
         ...(options?.remarkPlugins ?? []),
         remarkGfm,
         remarkMath,
       ];
       options.rehypePlugins = [...(options?.rehypePlugins ?? []), rehypeKatex];
-      console.log(options);
       return options;
     },
   });

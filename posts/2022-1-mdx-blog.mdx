@@ -1,0 +1,67 @@
+---
+title: "MDX 博客构建记录"
+date: 2022-01-17
+lastmod: 2022-01-17
+---
+
+## 框架
+
+本站使用 next.js + react.js + MUI + mdx-bundler 作为主体框架。
+
+### Next.js
+
+网站框架使用 Next.js，并使用 Vercel 托管本站。
+
+看中 Next.js 的特性包括：
+* 使用 `next/link` 组件可以通过 js bundle 增量加载新页面内容
+* 图片懒加载支持
+
+### MUI
+
+UI 库使用 React.js，组件库使用 Material Design 风格的 MUI
+
+### mdx-bundler
+
+博客内容编写使用 MDX 格式。MDX 在提供基础 Markdown 语法的同时，允许添加 React 组件，有更强的灵活性。
+
+对比了现有的几种 MDX 实现方案后，选择 `mdx-bundler`，基于以下几点原因：
+* `mdx-bundler` 支持在 MDX 文件中 import 组件并使用，并且该组件只会在访问该 MDX 对应页面时打包在页面内容中。不会影响其他 MDX 页面大小。
+* `mdx-bundler` 依赖少，使用 [xdm](https://github.com/wooorm/xdm) 且支持众多[插件](https://github.com/wooorm/xdm#plugins)，方便扩展 Markdown 支持的功能
+* MDX 中可导入导出变量，比如导入博客标签 `Tags` 枚举类型并导出博客文章包含的标签列表 `Tags[]`
+
+缺点：
+* neovim treesitter 没有 MDX 支持，不过可以当作 Markdown 处理
+* neovim 中 MDX 文件没有 LSP 提供补全
+
+## 技术细节
+
+### MDX
+
+MDX 扩展插件：
+* 使用 remark-math 和 rehype-katex 提供 LaTeX 公式支持。
+* 使用 remark-gfm 补充默认 Markdown 语法（表格支持）
+
+#### TODO
+
+LaTeX 公式在客户端渲染？收益在于可在运行时更新渲染，允许可交互式渲染公式，缺点在于浏览器端需要加载 katex 库。
+
+代码块高亮计划使用 [Prism](https://prismjs.com/) 在浏览器端渲染高亮。但是它使用正则进行高亮，存在高亮错误的情况。  
+更准确的高亮方案可以考虑 wasm 实现的 [web-tree-sitter](https://www.npmjs.com/package/web-tree-sitter)。
+但是 treesitter 只提供了 AST 构建。我还没找到使用它进行代码高亮的库，所以代码高亮需要自己写代码实现。
+
+* [ ] 代码高亮
+* [ ] 侧边栏目录，支持点击跳转
+* [ ] mermaid.js 图表在浏览器端渲染
+
+## 测试
+
+```c
+#include<stdio.h>
+int main(void) {
+    int a = 1;
+    printf('abc')
+    return 0;
+}
+```
+
+[link to another page](./ngrok)
