@@ -4,6 +4,9 @@ date: 2022-01-17
 lastmod: 2022-01-17
 ---
 
+import { BlogTags } from '../models/BlogTag';
+export const tags = [ BlogTags.Programming ];
+
 ## 框架
 
 本站使用 next.js + react.js + MUI + mdx-bundler 作为主体框架。
@@ -40,6 +43,8 @@ UI 库使用 React.js，组件库使用 Material Design 风格的 MUI
 MDX 扩展插件：
 * 使用 remark-math 和 rehype-katex 提供 LaTeX 公式支持。
 * 使用 remark-gfm 补充默认 Markdown 语法（表格支持）
+* 使用 `remark-mdx-toc` 将目录信息导出 mdx 文件，
+* 使用 `rehype-slug` 为标题添加 `id`，允许目录列表添加锚点链接跳转到标题
 
 #### TODO
 

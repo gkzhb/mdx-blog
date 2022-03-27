@@ -2,13 +2,19 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { bundleMDX } from "mdx-bundler";
+
+import remarkGfm from "remark-gfm";
 import remarkParse from 'remark-parse';
 import remarkMath from "remark-math";
 import remarkRehype from 'remark-rehype';
+import { remarkMdxToc } from "remark-mdx-toc";
+
 import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
 import rehypeStringify from 'rehype-stringify';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+
 import { getDate } from "./time";
-import remarkGfm from "remark-gfm";
 import dayjs from "dayjs";
 
 const postsDirectory = path.join(process.cwd(), "posts");
@@ -137,8 +143,14 @@ export const getPostData = async (id: string) => {
         ...(options?.remarkPlugins ?? []),
         remarkGfm,
         remarkMath,
+        remarkMdxToc,
       ];
-      options.rehypePlugins = [...(options?.rehypePlugins ?? []), rehypeKatex];
+      options.rehypePlugins = [
+        ...(options?.rehypePlugins ?? []),
+        rehypeKatex,
+        rehypeSlug,
+        // rehypeAutolinkHeadings,
+      ];
       return options;
     },
   });

@@ -68,8 +68,8 @@ const Layout: React.FC<IProps> = (props) => {
               </Toolbar>
           </AppBar>
         </HideOnScroll>
-        <Box component="main">
-          <Container>{children}</Container>
+        <Box component="main" sx={{ scrollMarginTop: 70}}>
+          {children}
         </Box>
         <Container>
           {!home && (
