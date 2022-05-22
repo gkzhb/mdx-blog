@@ -30,8 +30,7 @@
     "rehype-slug": "^5.0.1",
     "rehype-stringify": "^9.0.2",
     "remark-gfm": "^3.0.1",
-    "remark-math": "^5.1.1",
-    "remark-mdx-toc": "^0.1.0"
+    "remark-math": "^5.1.1"
   },
   "devDependencies": {
     "@types/node": "17.0.35",
