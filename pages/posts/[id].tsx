@@ -18,7 +18,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Box from "@mui/material/Box";
 import { getMDXComponent, getMDXExport } from "mdx-bundler/client";
 
-import { TocEntry } from "remark-mdx-toc";
+import { TocEntry } from "../../lib/remark-mdx-toc.d";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Typography from "@mui/material/Typography";
 import Layout from "../../components/Layout";
