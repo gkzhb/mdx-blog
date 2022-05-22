@@ -4,20 +4,19 @@ import matter from "gray-matter";
 import { bundleMDX } from "mdx-bundler";
 
 import remarkGfm from "remark-gfm";
-import remarkParse from 'remark-parse';
+// import remarkParse from 'remark-parse';
 import remarkMath from "remark-math";
-import remarkRehype from 'remark-rehype';
-import { remarkMdxToc } from "remark-mdx-toc";
+// import remarkRehype from 'remark-rehype';
+import { remarkMdxToc } from "./remark-mdx-toc";
 
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
-import rehypeStringify from 'rehype-stringify';
+// import rehypeStringify from 'rehype-stringify';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 import { getDate } from "./time";
+import { postsDirectory } from './constants';
 import dayjs from "dayjs";
-
-const postsDirectory = path.join(process.cwd(), "posts");
 
 export function formatFrontmatter(frontmatter) {
   const {
@@ -149,7 +148,7 @@ export const getPostData = async (id: string) => {
         ...(options?.rehypePlugins ?? []),
         rehypeKatex,
         rehypeSlug,
-        // rehypeAutolinkHeadings,
+        rehypeAutolinkHeadings,
       ];
       return options;
     },
