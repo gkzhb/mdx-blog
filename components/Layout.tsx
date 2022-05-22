@@ -71,13 +71,6 @@ const Layout: React.FC<IProps> = (props) => {
         <Box component="main" sx={{ scrollMarginTop: 70}}>
           {children}
         </Box>
-        <Container>
-          {!home && (
-            <Box>
-              <Link href="/">← Back to home</Link>
-            </Box>
-          )}
-        </Container>
       </StyledEngineProvider>
     </>
   );

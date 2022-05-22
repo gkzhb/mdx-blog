@@ -56,7 +56,7 @@ const Post = ({ postData }: { postData: PostData }) => {
       <Container sx={{ display: "flex" }}>
         <Box
           component="article"
-          sx={{ padding: "24px 0" }}
+          sx={{ padding: "24px 0", width: showToc ? "calc(100% - 240px)" : "100%" }}
           className="line-numbers"
         >
           <Typography variant="h4" component="h1">
@@ -83,9 +83,12 @@ const Post = ({ postData }: { postData: PostData }) => {
               }}
             />
           )}
+          <Box>
+            <Link href="/">← Back to home</Link>
+          </Box>
         </Box>
         {toc && showToc && (
-          <Container
+          <Box
             component="nav"
             sx={{
               top: 0,
@@ -96,7 +99,7 @@ const Post = ({ postData }: { postData: PostData }) => {
             }}
           >
             <TableOfContent toc={toc} />
-          </Container>
+          </Box>
         )}
       </Container>
     </Layout>
