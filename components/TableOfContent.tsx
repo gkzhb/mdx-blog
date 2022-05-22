@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TocEntry } from "remark-mdx-toc";
+import { TocEntry } from "../lib/remark-mdx-toc.d";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";

@@ -6,7 +6,7 @@ import { MdxjsEsm } from "mdast-util-mdx";
 import { name as isIdentifierName } from 'estree-util-is-identifier-name';
 import { valueToEstree } from 'estree-util-value-to-estree';
 import { Plugin } from "unified";
-import { RemarkMdxTocOptions, TocEntry } from "./remark-mdx-toc";
+import { RemarkMdxTocOptions, TocEntry } from "./remark-mdx-toc.d";
 
 export const remarkMdxToc: Plugin<[RemarkMdxTocOptions?]> = (options = {}) => (
   (ast) => {
@@ -44,7 +44,7 @@ export const remarkMdxToc: Plugin<[RemarkMdxTocOptions?]> = (options = {}) => (
     });
 
     // Export in MDX
-    const tocExport: MDXJSEsm = {
+    const tocExport: MdxjsEsm = {
       type: "mdxjsEsm",
       value: "",
       data: {

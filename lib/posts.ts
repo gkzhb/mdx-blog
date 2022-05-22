@@ -137,7 +137,7 @@ export const getPostData = async (id: string) => {
 
   const { code, frontmatter } = await bundleMDX({
     source: fileContents,
-    xdmOptions: (options) => {
+    mdxOptions: (options) => {
       options.remarkPlugins = [
         ...(options?.remarkPlugins ?? []),
         remarkGfm,
