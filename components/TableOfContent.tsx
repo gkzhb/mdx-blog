@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import Slugger from 'github-slugger'
+import Slugger from "github-slugger";
 
 export interface IProps {
   toc: TocEntry[];
@@ -43,8 +43,7 @@ const TableOfContent: React.FC<IProps> = ({ toc }) => {
   const [slugger, setSlugger] = useState<Slugger>(new Slugger());
   useEffect(() => {
     slugger.reset();
-    console.log('reset slugs', toc)
-  }, [toc, slugger])
+  }, [toc, slugger]);
   return (
     <List dense>
       {toc.map((tocItem) => (
