@@ -1,17 +1,18 @@
 // https://github.com/DCsunset/remark-mdx-toc
-import { Heading, Root } from "mdast";
-import { visit } from "unist-util-visit";
-import { toString } from "mdast-util-to-string";
-import { MdxjsEsm } from "mdast-util-mdx";
-import { name as isIdentifierName } from 'estree-util-is-identifier-name';
-import { valueToEstree } from 'estree-util-value-to-estree';
-import { Plugin } from "unified";
-import { RemarkMdxTocOptions, TocEntry } from "./remark-mdx-toc.d";
+import {Heading, Root} from 'mdast';
+import {visit} from 'unist-util-visit';
+import {toString} from 'mdast-util-to-string';
+import {MdxjsEsm} from 'mdast-util-mdx';
+import {name as isIdentifierName} from 'estree-util-is-identifier-name';
+import {valueToEstree} from 'estree-util-value-to-estree';
+import {Plugin} from 'unified';
+import {RemarkMdxTocOptions, TocEntry} from './remark-mdx-toc.d';
 
-export const remarkMdxToc: Plugin<[RemarkMdxTocOptions?]> = (options = {}) => (
-  (ast) => {
+export const remarkMdxToc: Plugin<[RemarkMdxTocOptions?]> =
+  (options = {}) =>
+  ast => {
     const mdast = ast as Root;
-    const name = options.name ?? "toc";
+    const name = options.name ?? 'toc';
     if (!isIdentifierName(name)) {
       throw new Error(`Invalid name for an identifier: ${name}`);
     }
@@ -22,11 +23,11 @@ export const remarkMdxToc: Plugin<[RemarkMdxTocOptions?]> = (options = {}) => (
     const flatToc: TocEntry[] = [];
     const createEntry = (node: Heading): TocEntry => ({
       depth: node.depth,
-      value: toString(node, { includeImageAlt: false }),
-      children: []
+      value: toString(node, {includeImageAlt: false}),
+      children: [],
     });
 
-    visit(mdast, "heading", node => {
+    visit(mdast, 'heading', node => {
       const entry = createEntry(node);
       flatToc.push(entry);
 
@@ -45,36 +46,35 @@ export const remarkMdxToc: Plugin<[RemarkMdxTocOptions?]> = (options = {}) => (
 
     // Export in MDX
     const tocExport: MdxjsEsm = {
-      type: "mdxjsEsm",
-      value: "",
+      type: 'mdxjsEsm',
+      value: '',
       data: {
         estree: {
-          type: "Program",
-          sourceType: "module",
+          type: 'Program',
+          sourceType: 'module',
           body: [
             {
-              type: "ExportNamedDeclaration",
+              type: 'ExportNamedDeclaration',
               specifiers: [],
               source: null,
               declaration: {
-                type: "VariableDeclaration",
-                kind: "const",
+                type: 'VariableDeclaration',
+                kind: 'const',
                 declarations: [
                   {
-                    type: "VariableDeclarator",
+                    type: 'VariableDeclarator',
                     id: {
-                      type: "Identifier",
-                      name
+                      type: 'Identifier',
+                      name,
                     },
-                    init: valueToEstree(toc)
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
+                    init: valueToEstree(toc),
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
     };
     mdast.children.unshift(tocExport);
-  }
-);
+  };

@@ -1,2 +1,2 @@
 import path from 'path';
-export const postsDirectory = path.join('.', "posts");
+export const postsDirectory = path.join('.', 'posts');

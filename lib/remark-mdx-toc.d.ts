@@ -1,10 +1,10 @@
-import { Plugin } from "unified";
+import {Plugin} from 'unified';
 
 export type TocEntry = {
-  depth: number,
+  depth: number;
   // value of the heading
-  value: string,
-  children: TocEntry[]
+  value: string;
+  children: TocEntry[];
 };
 
 export interface RemarkMdxTocOptions {
@@ -12,7 +12,7 @@ export interface RemarkMdxTocOptions {
    * If specified, export toc using the name.
    * Otherwise, use `toc` as the name.
    */
-  name?: string
-};
+  name?: string;
+}
 
 export declare const remarkMdxToc: Plugin<[RemarkMdxTocOptions?]>;
