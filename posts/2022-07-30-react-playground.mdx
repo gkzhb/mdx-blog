@@ -1,0 +1,39 @@
+---
+title: "React.js 代码块 Playground demo"
+date: 2022-07-30
+lastmod: 2022-07-30
+---
+
+如下是一个 JSX 代码块，可以在左侧 Monaco 编辑器（VS Code 的编辑器组件）中编辑，在右侧实时预览结果。编辑器下方有可折叠内容，
+点击展开后有两个标签页，ERRORS 中展示代码编辑的错误信息，SCOPE 展示代码块中可以使用的全局变量及其类型。
+
+<Playground code={`const Header = styled.div\`
+  color: palevioletred;
+  font-size: 18px;
+\`;
+const Result = () => {
+    const [a, setA] = React.useState(1);
+    return <Header>{a}</Header>
+};
+render(<Result />);`} noInline={true} />
+
+在 MDX 中原始代码如下：
+
+```jsx
+<Playground code={`const Header = styled.div\`
+  color: palevioletred;
+  font-size: 18px;
+\`;
+const Result = () => {
+    const [a, setA] = React.useState(1);
+    return <Header>{a}</Header>
+};
+render(<Result />);`} noInline={true} />
+```
+
+实现 Playground 主要依赖项有：
+
+- 编辑器组件：[suren-atoyan/monaco-react: Monaco Editor for React - use the monaco-editor in any React application without needing to use webpack (or rollup/parcel/etc) configuration files / plugins](https://github.com/suren-atoyan/monaco-react)
+  - Monaco 编辑器对网页前端不太友好，对不同的项目架构需要做不同的配置，而 @monaco-editor/react 包将这些编译配置问题解决了，用起来很简单
+- 重新渲染页面中 React 组件：[FormidableLabs/react-live: A flexible playground for live editing React components](https://github.com/FormidableLabs/react-live)
+  - 此 Playground 组件的能力来源于 react-live

@@ -24,6 +24,7 @@ import Typography from '@mui/material/Typography';
 import Layout from '../../components/Layout';
 import Link from '../../components/Link';
 import TableOfContent from '../../components/TableOfContent';
+import {LiveCode} from '../../components/LiveCode';
 import {getAllPostIds, PostData, getPostData} from '../../lib/posts';
 
 interface IMdxPageModule {
@@ -47,7 +48,7 @@ const Post = ({postData}: {postData: PostData}) => {
 
   useEffect(() => {
     // update MDX content only when `code` changes
-    setMdxModule(getMDXExport<IMdxPageModule, {}>(code));
+    setMdxModule(getMDXExport<IMdxPageModule, {}>(code, {}));
   }, [code]);
 
   useEffect(() => {
@@ -87,6 +88,7 @@ const Post = ({postData}: {postData: PostData}) => {
                 Layout,
                 a: Link,
                 p: Typography,
+                Playground: LiveCode,
               }}
             />
           )}
