@@ -15,10 +15,10 @@ import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 import {getDate} from './time';
-import {postsDirectory} from './constants';
+import {IFrontMatter, IRawFrontMatter, postsDirectory} from './constants';
 import dayjs from 'dayjs';
 
-export function formatFrontmatter(frontmatter) {
+export function formatFrontmatter(frontmatter: IRawFrontMatter) {
   const {
     date: createdDate,
     title,
@@ -40,7 +40,9 @@ export function formatFrontmatter(frontmatter) {
   };
 }
 
-export function filterFrontmatter(frontmatter) {
+export function filterFrontmatter(
+  frontmatter: IFrontMatter & {date: dayjs.Dayjs}
+) {
   const post = frontmatter;
   return {
     id: post.id || null,
@@ -68,7 +70,7 @@ export function getSortedPostsData() {
 
     // Combine the data with the id
     return {
-      ...formatFrontmatter(matterResult.data),
+      ...formatFrontmatter(matterResult.data as IRawFrontMatter),
       id,
     };
   });
@@ -158,7 +160,9 @@ export const getPostData = async (id: string) => {
 
   // Combine the data with the id
   return {
-    frontmatter: filterFrontmatter(formatFrontmatter(frontmatter)),
+    frontmatter: filterFrontmatter(
+      formatFrontmatter(frontmatter as IRawFrontMatter)
+    ),
     id,
     code,
   } as PostData;
