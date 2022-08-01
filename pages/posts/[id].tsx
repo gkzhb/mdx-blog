@@ -26,6 +26,7 @@ import Link from '../../components/Link';
 import TableOfContent from '../../components/TableOfContent';
 import {LiveCode} from '../../components/LiveCode';
 import {getAllPostIds, PostData, getPostData} from '../../lib/posts';
+import {ParsedUrlQuery} from 'querystring';
 
 interface IMdxPageModule {
   tags?: string[];
@@ -128,9 +129,9 @@ export const getStaticPaths: GetStaticPaths = () => {
 export const getStaticProps: GetStaticProps = async ({
   params,
 }: {
-  params: {id: string};
+  params?: ParsedUrlQuery;
 }) => {
-  const postData = await getPostData(params.id);
+  const postData = await getPostData(params!.id as string);
   return {
     props: {
       postData,
